@@ -1,79 +1,29 @@
-import mariadb, { createPool } from "mariadb";
-import { error } from "console";
+import { createPool } from "mariadb";
+import { config } from "dotenv";
+
+config();
 
 const pool = createPool({
-  host: "localhost",
-  user: "v-mariadb",
-  password: "v-mariadb",
-  database: "sailore",
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_DATABASE,
 });
 
-export const createSailorTable = () => {
-  return new Promise((resolve, reject) => {
-    pool
-      .query(
-        `CREATE TABLE SAILOR (SID INT PRIMARY KEY AUTO_INCREMENT, SNAME VARCHAR(64), RATING INT, AGE INT)`
-      )
-      .then((results) => resolve(results))
-      .catch((error) => reject(error));
-  });
-};
+pool.on("connection", function (connection) {
+  console.log("DB:: Connected");
+});
 
-export const createSailor = (name: String, rating: Number, age: Number) => {
-  return new Promise((resolve, reject) => {
-    pool
-      .query(`INSERT INTO SAILOR (SNAME, RATING, AGE) values (?, ?, ?)`, [
-        name,
-        rating,
-        age,
-      ])
-      .then((results) => resolve(results))
-      .catch((error) => reject(error));
-  });
-};
+pool.on("acquire", function (connection) {
+  console.log("DB:: Connection %d acquired", connection.threadId);
+});
 
-export const readAllSailors = () => {
-  return new Promise((resolve, reject) => {
-    pool
-      .query(`SELECT * FROM SAILOR`)
-      .then((results) => resolve(results))
-      .catch((error) => reject(error));
-  });
-};
+pool.on("enqueue", function () {
+  console.log("DB:: Waiting for available connection");
+});
 
-export const readSailor = (id: String) => {
-  return new Promise((resolve, reject) => {
-    pool
-      .query(`SELECT * FROM SAILOR WHERE SID = ?`, [id])
-      .then((results) => resolve(results))
-      .catch((error) => reject(error));
-  });
-};
+pool.on("release", function (connection) {
+  console.log("DB:: Connection %d released", connection.threadId);
+});
 
-export const updateSailor = (
-  id: String,
-  name: String,
-  rating: Number,
-  age: Number
-) => {
-  return new Promise((resolve, reject) => {
-    pool
-      .query(`UPDATE SAILOR SET SNAME = ?, RATING = ?, AGE = ? WHERE SID = ?`, [
-        name,
-        rating,
-        age,
-        id,
-      ])
-      .then((results) => resolve(results))
-      .catch((error) => reject(error));
-  });
-};
-
-export const deleteSailor = (id: String) => {
-  return new Promise((resolve, reject) => {
-    pool
-      .query(`DELETE FROM SAILOR WHERE SID = ?`, [id])
-      .then((results) => resolve(results))
-      .catch((error) => reject(error));
-  });
-};
+export default pool;

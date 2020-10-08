@@ -1,5 +1,5 @@
 import express, { Request, Response } from "express";
-import * as db from "../config/db";
+import pool from "../config/db";
 import sailorSchema from "../models/sailor";
 
 const router = express.Router();
@@ -10,7 +10,9 @@ router.get("/", (req: Request, res: Response) => {
 
 router.patch("/createSailorTable", async (req: Request, res: Response) => {
   try {
-    const data = await db.createSailorTable();
+    const data = await pool.query(
+      `CREATE TABLE SAILOR (SID INT PRIMARY KEY AUTO_INCREMENT, SNAME VARCHAR(64), RATING INT, AGE INT)`
+    );
     res.json({ data, message: "Table successfully created" });
   } catch (error) {
     console.error(error);
@@ -27,7 +29,11 @@ router.post("/sailor", async (req: Request, res: Response) => {
 
     await sailorSchema.validate(sailor);
 
-    const data = await db.createSailor(name, rating, age);
+    const data = await pool.query(
+      `INSERT INTO SAILOR (SNAME, RATING, AGE) values (?, ?, ?)`,
+      [name, rating, age]
+    );
+
     res.json({ data, message: "Sailor Successfully created" });
   } catch (error) {
     console.error(error);
@@ -37,7 +43,7 @@ router.post("/sailor", async (req: Request, res: Response) => {
 
 router.get("/sailor", async (req: Request, res: Response) => {
   try {
-    const data = await db.readAllSailors();
+    const data = await pool.query(`SELECT * FROM SAILOR`);
     res.json({ data, message: "Sailors Successfully fetched" });
   } catch (error) {
     console.error(error);
@@ -49,7 +55,9 @@ router.get("/sailor/:id", async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
 
-    const data: any = await db.readSailor(id);
+    const data: any = await pool.query(`SELECT * FROM SAILOR WHERE SID = ?`, [
+      id,
+    ]);
 
     if (data.length === 0) res.status(404).json({ message: "No Sailor Found" });
 
@@ -68,7 +76,10 @@ router.put("/sailor/:id", async (req: Request, res: Response) => {
 
     await sailorSchema.validate(sailor);
 
-    const data: any = await db.updateSailor(id, name, rating, age);
+    const data: any = await pool.query(
+      `UPDATE SAILOR SET SNAME = ?, RATING = ?, AGE = ? WHERE SID = ?`,
+      [name, rating, age, id]
+    );
 
     res.json({ data, message: "Sailor Successfully Updated" });
   } catch (error) {
@@ -80,8 +91,9 @@ router.put("/sailor/:id", async (req: Request, res: Response) => {
 router.delete("/sailor/:id", async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const data: any = await db.deleteSailor(id);
-
+    const data: any = await pool.query(`DELETE FROM SAILOR WHERE SID = ?`, [
+      id,
+    ]);
     res.json({ data, message: "Sailor Successfully Deleted" });
   } catch (error) {
     console.error(error);
