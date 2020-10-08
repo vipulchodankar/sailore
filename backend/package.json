@@ -1,11 +1,12 @@
 {
-  "name": "server",
+  "name": "backend",
   "version": "1.0.0",
-  "description": "",
+  "description": "Backend for sailore",
   "scripts": {
     "start": "node dist/index.js",
     "dev": "nodemon src/index.ts",
-    "build": "tsc -p ."
+    "build": "tsc -p .",
+    "deploy": "cd .. && bash heroku-deploy.sh"
   },
   "keywords": [],
   "author": "Vipul Chodankar",
