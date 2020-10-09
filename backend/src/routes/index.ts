@@ -24,14 +24,14 @@ router.patch("/createSailorTable", async (req: Request, res: Response) => {
 
 router.post("/sailor", async (req: Request, res: Response) => {
   try {
-    const { name, rating, age } = req.body;
-    const sailor = { name, rating, age };
+    const { SNAME, RATING, AGE } = req.body;
+    const sailor = { SNAME, RATING, AGE };
 
     await sailorSchema.validate(sailor);
 
     const data = await pool.query(
       `INSERT INTO SAILOR (SNAME, RATING, AGE) values (?, ?, ?)`,
-      [name, rating, age]
+      [SNAME, RATING, AGE]
     );
 
     res.json({ data, message: "Sailor Successfully created" });
@@ -71,14 +71,14 @@ router.get("/sailor/:id", async (req: Request, res: Response) => {
 router.put("/sailor/:id", async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const { name, rating, age } = req.body;
-    const sailor = { name, rating, age };
+    const { SNAME, RATING, AGE } = req.body;
+    const sailor = { SNAME, RATING, AGE };
 
     await sailorSchema.validate(sailor);
 
     const data: any = await pool.query(
       `UPDATE SAILOR SET SNAME = ?, RATING = ?, AGE = ? WHERE SID = ?`,
-      [name, rating, age, id]
+      [SNAME, RATING, AGE, id]
     );
 
     res.json({ data, message: "Sailor Successfully Updated" });
