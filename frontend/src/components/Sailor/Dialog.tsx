@@ -14,6 +14,7 @@ const SailorDialog = (props: SailorDialogProps) => {
   const {
     dialog: { isOpen, sailor },
     setDialog,
+    setSailors,
   } = props;
 
   const handleClose = () => {
@@ -26,7 +27,11 @@ const SailorDialog = (props: SailorDialogProps) => {
         {sailor ? "Update" : "Add"} Sailor
       </DialogTitle>
       <DialogContent>
-        <SailorForm sailor={sailor} />
+        <SailorForm
+          sailor={sailor}
+          setSailors={setSailors}
+          handleClose={handleClose}
+        />
       </DialogContent>
     </Dialog>
   );

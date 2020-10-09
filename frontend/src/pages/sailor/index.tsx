@@ -85,7 +85,11 @@ const SailorPage: FC = () => {
         Add Sailor
       </Fab>
 
-      <SailorDialog setDialog={setDialog} dialog={dialog}/>
+      <SailorDialog
+        setDialog={setDialog}
+        dialog={dialog}
+        setSailors={setSailors}
+      />
     </Container>
   );
 };

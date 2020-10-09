@@ -9,8 +9,10 @@ import Button from "@material-ui/core/Button";
 import { Formik, Form, Field } from "formik";
 import { TextField } from "formik-material-ui";
 
+import Sailor from "../../interfaces/Sailor";
+
 const SailorForm = (props: any) => {
-  const { sailor } = props;
+  const { sailor, setSailors, handleClose } = props;
   const isNew = !sailor;
 
   let initialValues = {
@@ -28,16 +30,22 @@ const SailorForm = (props: any) => {
     if (isNew)
       axios
         .post("/sailor", values)
-        .then(({ data }) => {
-          console.log(data);
+        .then(({ data: { data } }) => {
+          setSailors((prevState: Sailor[]) => [...prevState, ...data]);
+          handleClose();
         })
         .catch((error) => console.error(error))
         .finally(() => setSubmitting(false));
     else {
       axios
         .put(`/sailor/${values.SID}`, values)
-        .then(({ data }) => {
-          console.log(data);
+        .then(() => {
+          setSailors((prevState: Sailor[]) =>
+            prevState.map((sailor) =>
+              sailor.SID === values.SID ? values : sailor
+            )
+          );
+          handleClose();
         })
         .catch((error) => console.error(error))
         .finally(() => setSubmitting(false));
