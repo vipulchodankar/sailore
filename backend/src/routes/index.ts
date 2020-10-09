@@ -29,10 +29,16 @@ router.post("/sailor", async (req: Request, res: Response) => {
 
     await sailorSchema.validate(sailor);
 
-    const data = await pool.query(
+    const {
+      insertId,
+    } = await pool.query(
       `INSERT INTO SAILOR (SNAME, RATING, AGE) values (?, ?, ?)`,
       [SNAME, RATING, AGE]
     );
+
+    const data: any = await pool.query(`SELECT * FROM SAILOR WHERE SID = ?`, [
+      insertId,
+    ]);
 
     res.json({ data, message: "Sailor Successfully created" });
   } catch (error) {
