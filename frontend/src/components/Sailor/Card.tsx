@@ -22,11 +22,11 @@ const useStyles = makeStyles({
 
 const SailorCard = (props: any) => {
   const classes = useStyles();
-  const { SID, SNAME, RATING, AGE, setSailors } = props;
+  const { SID, SNAME, RATING, AGE, setSailors, setDialog } = props;
 
   const handleUpdate = (e: any) => {
     e.stopPropagation();
-    console.log("Will update sailor with id: " + SID);
+    setDialog({ isOpen: true, sailor: { SID, SNAME, RATING, AGE } });
   };
 
   const handleDelete = (e: any) => {
