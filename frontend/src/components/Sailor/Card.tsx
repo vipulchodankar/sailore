@@ -1,4 +1,5 @@
 import React from "react";
+import axios from "../../services/axios";
 
 // Mui
 import { makeStyles } from "@material-ui/core/styles";
@@ -19,9 +20,9 @@ const useStyles = makeStyles({
   },
 });
 
-const SailorCard = (props: Sailor) => {
+const SailorCard = (props: any) => {
   const classes = useStyles();
-  const { SID, SNAME, RATING, AGE } = props;
+  const { SID, SNAME, RATING, AGE, setSailors } = props;
 
   const handleUpdate = (e: any) => {
     e.stopPropagation();
@@ -30,7 +31,16 @@ const SailorCard = (props: Sailor) => {
 
   const handleDelete = (e: any) => {
     e.stopPropagation();
-    console.log("Will delete sailor with id: " + SID);
+
+    axios
+      .delete(`/sailor/${SID}`)
+      .then(({ data }) => {
+        console.log(data);
+        setSailors((prevState: any) =>
+          prevState.filter((sailor: Sailor) => sailor.SID !== SID)
+        );
+      })
+      .catch((error) => console.error(error));
   };
 
   return (

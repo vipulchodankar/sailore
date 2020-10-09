@@ -35,13 +35,13 @@ const SailorPage: FC = () => {
       <Box py={4}>
         <Grid container spacing={4}>
           {sailors.map((sailor) => (
-            <Grid item xs={12} sm={6} md={4} key={sailor.SID}>
-              <SailorCard {...sailor} />
+            <Grid item xs={12} sm={6} md={4} xl={3} key={sailor.SID}>
+              <SailorCard {...sailor} setSailors={setSailors} />
             </Grid>
           ))}
 
           {sailors.length === 0 ? (
-            <Grid item xs={12} sm={6} md={4}>
+            <Grid item xs={12} sm={6} md={4} xl={3}>
               <Typography>No sailors found</Typography>
             </Grid>
           ) : null}
