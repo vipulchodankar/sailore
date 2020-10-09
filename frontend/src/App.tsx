@@ -6,13 +6,14 @@ import { MuiThemeProvider } from "@material-ui/core";
 
 // Custom Components
 import Layout from "./components/Layout";
+import Loader from "./components/Loader";
 
 import theme from "./config/theme";
 
 function App() {
   return (
     <Fragment>
-      <Suspense fallback={<p>Loading</p>}>
+      <Suspense fallback={<Loader fullscreen />}>
         <MuiThemeProvider theme={theme}>
           <Router>
             <Layout />
