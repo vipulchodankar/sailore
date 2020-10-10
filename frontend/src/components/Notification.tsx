@@ -25,10 +25,6 @@ const Notification = () => {
     dispatch(doHideNotification());
   };
 
-  console.log("====================================");
-  console.log(type);
-  console.log("====================================");
-
   return (
     <Snackbar
       open={isOpen}

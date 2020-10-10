@@ -7,6 +7,7 @@ import {
   doFetchSailors,
   doSetSelectedSailor,
   doOpenSailorDialog,
+  doSortSailors,
 } from "../../redux/actions/sailors";
 import {
   selectSailorsList,
@@ -26,6 +27,11 @@ import IconButton from "@material-ui/core/IconButton";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import ClearIcon from "@material-ui/icons/Clear";
 import SearchIcon from "@material-ui/icons/Search";
+import Select from "@material-ui/core/Select";
+import MenuItem from "@material-ui/core/MenuItem";
+import InputLabel from "@material-ui/core/InputLabel";
+import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
+import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
 
 // Custom Components
 import Loader from "../../components/Loader";
@@ -52,6 +58,7 @@ const SailorPage: FC = () => {
   const loading = useSelector(selectSailorsIsLoading);
   const dispatch = useDispatch();
   const [search, setSearch] = useState("");
+  const [sortBy, setSortBy] = useState("");
 
   const fuseOptions = {
     includeScore: true,
@@ -66,6 +73,13 @@ const SailorPage: FC = () => {
       dispatch(doFetchSailors());
     },
     [dispatch]
+  );
+
+  useEffect(
+    function sortSailors() {
+      dispatch(doSortSailors(sortBy));
+    },
+    [dispatch, sortBy]
   );
 
   const handleFABClick = (e: any) => {
@@ -85,7 +99,7 @@ const SailorPage: FC = () => {
       ) : (
         <Box py={4}>
           <Box pb={4}>
-            <Grid container spacing={4}>
+            <Grid container spacing={4} justify="space-between">
               <Grid item xs={12} sm={6} md={4} xl={3}>
                 <TextField
                   value={search}
@@ -113,6 +127,37 @@ const SailorPage: FC = () => {
                     ),
                   }}
                 />
+              </Grid>
+              <Grid item xs={12} sm={6} md={4} xl={3}>
+                <InputLabel id="sailor-sort-label" shrink>
+                  Sort By
+                </InputLabel>
+                <Select
+                  labelId="sailor-sort-label"
+                  id="sailor-sort"
+                  value={sortBy}
+                  onChange={(e) => setSortBy(String(e.target.value))}
+                  fullWidth
+                >
+                  <MenuItem value={"name_asc"}>
+                    Name <ArrowUpwardIcon fontSize="small" />
+                  </MenuItem>
+                  <MenuItem value={"name_desc"}>
+                    Name <ArrowDownwardIcon fontSize="small" />
+                  </MenuItem>
+                  <MenuItem value={"rating_asc"}>
+                    Rating <ArrowUpwardIcon fontSize="small" />
+                  </MenuItem>
+                  <MenuItem value={"rating_desc"}>
+                    Rating <ArrowDownwardIcon fontSize="small" />
+                  </MenuItem>
+                  <MenuItem value={"age_asc"}>
+                    Age <ArrowUpwardIcon fontSize="small" />
+                  </MenuItem>
+                  <MenuItem value={"age_desc"}>
+                    Age <ArrowDownwardIcon fontSize="small" />
+                  </MenuItem>
+                </Select>
               </Grid>
             </Grid>
           </Box>

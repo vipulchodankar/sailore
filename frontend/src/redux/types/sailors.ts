@@ -18,3 +18,5 @@ export const SET_SELECTED_SAILOR = "sailors/SET_SELECTED_SAILOR";
 
 export const OPEN_SAILOR_DIALOG = "sailors/OPEN_SAILOR_DIALOG";
 export const CLOSE_SAILOR_DIALOG = "sailors/CLOSE_SAILOR_DIALOG";
+
+export const SORT_SAILORS = "sailors/SORT_SAILORS";

@@ -52,6 +52,45 @@ const sailorsReducer = handleActions<any, any>(
       ...state,
       isDialogOpen: false,
     }),
+    // Sort
+    [actions.doSortSailors.toString()]: (state, { payload }) => {
+      const sailors = [...state.list];
+      let temp = [];
+      switch (payload) {
+        case "name_asc":
+          temp = sailors.sort((a: Sailor, b: Sailor) =>
+            a.SNAME.localeCompare(b.SNAME)
+          );
+          break;
+
+        case "name_desc":
+          temp = sailors.sort((a: Sailor, b: Sailor) =>
+            b.SNAME.localeCompare(a.SNAME)
+          );
+          break;
+
+        case "rating_asc":
+          temp = sailors.sort((a: Sailor, b: Sailor) => a.RATING - b.RATING);
+          break;
+
+        case "rating_desc":
+          temp = sailors.sort((a: Sailor, b: Sailor) => b.RATING - a.RATING);
+          break;
+
+        case "age_asc":
+          temp = sailors.sort((a: Sailor, b: Sailor) => a.AGE - b.AGE);
+          break;
+
+        case "age_desc":
+          temp = sailors.sort((a: Sailor, b: Sailor) => b.AGE - a.AGE);
+          break;
+
+        default:
+          return state;
+      }
+
+      return { ...state, list: temp };
+    },
   },
   initialState
 );
