@@ -1,5 +1,11 @@
 import React from "react";
-import axios from "../../services/axios";
+
+// Redux
+import { useDispatch } from "react-redux";
+import {
+  doSetSelectedSailor,
+  doDeleteSailor,
+} from "../../redux/actions/sailors";
 
 // Mui
 import { makeStyles } from "@material-ui/core/styles";
@@ -12,8 +18,6 @@ import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 
-import Sailor from "../../interfaces/Sailor";
-
 const useStyles = makeStyles({
   root: {
     // minWidth: 300,
@@ -22,25 +26,18 @@ const useStyles = makeStyles({
 
 const SailorCard = (props: any) => {
   const classes = useStyles();
-  const { SID, SNAME, RATING, AGE, setSailors, setDialog } = props;
+  const dispatch = useDispatch();
+  const { SID, SNAME, RATING, AGE, setDialog } = props;
 
   const handleUpdate = (e: any) => {
     e.stopPropagation();
     setDialog({ isOpen: true, sailor: { SID, SNAME, RATING, AGE } });
+    dispatch(doSetSelectedSailor({ SID, SNAME, RATING, AGE }));
   };
 
   const handleDelete = (e: any) => {
     e.stopPropagation();
-
-    axios
-      .delete(`/sailor/${SID}`)
-      .then(({ data }) => {
-        console.log(data);
-        setSailors((prevState: any) =>
-          prevState.filter((sailor: Sailor) => sailor.SID !== SID)
-        );
-      })
-      .catch((error) => console.error(error));
+    dispatch(doDeleteSailor(SID));
   };
 
   return (

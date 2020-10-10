@@ -8,13 +8,10 @@ import DialogContent from "@material-ui/core/DialogContent";
 // Custom Components
 import SailorForm from "./Form";
 
-import SailorDialogProps from "../../interfaces/SailorDialogProps";
-
-const SailorDialog = (props: SailorDialogProps) => {
+const SailorDialog = (props: any) => {
   const {
     dialog: { isOpen, sailor },
     setDialog,
-    setSailors,
   } = props;
 
   const handleClose = () => {
@@ -27,11 +24,7 @@ const SailorDialog = (props: SailorDialogProps) => {
         {sailor ? "Update" : "Add"} Sailor
       </DialogTitle>
       <DialogContent>
-        <SailorForm
-          sailor={sailor}
-          setSailors={setSailors}
-          handleClose={handleClose}
-        />
+        <SailorForm />
       </DialogContent>
     </Dialog>
   );

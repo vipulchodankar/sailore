@@ -1,5 +1,9 @@
 import React from "react";
-import axios from "../../services/axios";
+
+// Redux
+import { useDispatch, useSelector } from "react-redux";
+import { doCreateSailor, doUpdateSailor } from "../../redux/actions/sailors";
+import { selectSelectedSailor } from "../../redux/selectors/sailors";
 
 // Mui
 import Box from "@material-ui/core/Box";
@@ -9,10 +13,9 @@ import Button from "@material-ui/core/Button";
 import { Formik, Form, Field } from "formik";
 import { TextField } from "formik-material-ui";
 
-import Sailor from "../../interfaces/Sailor";
-
-const SailorForm = (props: any) => {
-  const { sailor, setSailors, handleClose } = props;
+const SailorForm = () => {
+  const dispatch = useDispatch();
+  const sailor = useSelector(selectSelectedSailor);
   const isNew = !sailor;
 
   let initialValues = {
@@ -27,29 +30,10 @@ const SailorForm = (props: any) => {
     values: any,
     { setSubmitting }: { setSubmitting: any }
   ) => {
-    if (isNew)
-      axios
-        .post("/sailor", values)
-        .then(({ data: { data } }) => {
-          setSailors((prevState: Sailor[]) => [...prevState, ...data]);
-          handleClose();
-        })
-        .catch((error) => console.error(error))
-        .finally(() => setSubmitting(false));
-    else {
-      axios
-        .put(`/sailor/${values.SID}`, values)
-        .then(() => {
-          setSailors((prevState: Sailor[]) =>
-            prevState.map((sailor) =>
-              sailor.SID === values.SID ? values : sailor
-            )
-          );
-          handleClose();
-        })
-        .catch((error) => console.error(error))
-        .finally(() => setSubmitting(false));
-    }
+    setSubmitting(false);
+
+    if (isNew) dispatch(doCreateSailor(values));
+    else dispatch(doUpdateSailor(values));
   };
 
   return (
