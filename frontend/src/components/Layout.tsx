@@ -3,6 +3,7 @@ import { Switch, Route } from "react-router-dom";
 
 // Custom Components
 import NavBar from "./NavBar";
+import Notification from "./Notification";
 
 import routes from "../config/routes";
 
@@ -22,6 +23,7 @@ const Layout: FC = () => {
 
         <Route component={lazy(() => import("../pages/404"))} />
       </Switch>
+      <Notification />
     </Fragment>
   );
 };

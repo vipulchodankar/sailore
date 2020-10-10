@@ -2,6 +2,7 @@ import { takeLatest, put, call } from "redux-saga/effects";
 import * as types from "../types/sailors";
 import * as actions from "../actions/sailors";
 import * as API from "../apis/sailors";
+import { doShowNotification } from "../actions/ui";
 
 function* createSailor({ payload }: any) {
   try {
@@ -10,9 +11,13 @@ function* createSailor({ payload }: any) {
     } = yield call(API.createSailor, payload);
     yield put(actions.doCreateSailorSuccess(data));
     yield put(actions.doCloseSailorDialog());
+    yield put(doShowNotification({ message: "Successfully created sailor" }));
   } catch (error) {
     console.error(error);
     yield put(actions.doCreateSailorFailure());
+    yield put(
+      doShowNotification({ message: "Couldn't create sailor", type: "warning" })
+    );
   }
 }
 function* fetchSailors() {
@@ -24,6 +29,9 @@ function* fetchSailors() {
   } catch (error) {
     console.error(error);
     yield put(actions.doFetchSailorsFailure());
+    yield put(
+      doShowNotification({ message: "Couldn't fetch sailors", type: "warning" })
+    );
   }
 }
 function* updateSailor({ payload }: any) {
@@ -31,18 +39,26 @@ function* updateSailor({ payload }: any) {
     yield call(API.updateSailor, payload);
     yield put(actions.doUpdateSailorSuccess(payload));
     yield put(actions.doCloseSailorDialog());
+    yield put(doShowNotification({ message: "Successfully updated sailor" }));
   } catch (error) {
     console.error(error);
     yield put(actions.doUpdateSailorFailure());
+    yield put(
+      doShowNotification({ message: "Couldn't update sailor", type: "warning" })
+    );
   }
 }
 function* deleteSailor({ payload }: any) {
   try {
     yield call(API.deleteSailor, payload);
     yield put(actions.doDeleteSailorSuccess(payload));
+    yield put(doShowNotification({ message: "Successfully deleted sailor" }));
   } catch (error) {
     console.error(error);
     yield put(actions.doDeleteSailorFailure());
+    yield put(
+      doShowNotification({ message: "Couldn't delete sailor", type: "warning" })
+    );
   }
 }
 
