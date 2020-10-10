@@ -1,9 +1,10 @@
 import Sailor from "../Sailor";
 
 interface State {
-  isLoading: false;
+  isLoading: boolean;
   list: Sailor[];
-  selected: null;
+  selected: Sailor | null;
+  isDialogOpen: boolean;
 }
 
 export default State;

@@ -26,3 +26,6 @@ export const doDeleteSailorSuccess = createAction(
 export const doDeleteSailorFailure = createAction(types.DELETE_SAILOR_FAILED);
 
 export const doSetSelectedSailor = createAction(types.SET_SELECTED_SAILOR);
+
+export const doOpenSailorDialog = createAction(types.OPEN_SAILOR_DIALOG);
+export const doCloseSailorDialog = createAction(types.CLOSE_SAILOR_DIALOG);

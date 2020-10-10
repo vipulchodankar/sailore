@@ -9,6 +9,7 @@ function* createSailor({ payload }: any) {
       data: { data },
     } = yield call(API.createSailor, payload);
     yield put(actions.doCreateSailorSuccess(data));
+    yield put(actions.doCloseSailorDialog());
   } catch (error) {
     console.error(error);
     yield put(actions.doCreateSailorFailure());
@@ -29,6 +30,7 @@ function* updateSailor({ payload }: any) {
   try {
     yield call(API.updateSailor, payload);
     yield put(actions.doUpdateSailorSuccess(payload));
+    yield put(actions.doCloseSailorDialog());
   } catch (error) {
     console.error(error);
     yield put(actions.doUpdateSailorFailure());

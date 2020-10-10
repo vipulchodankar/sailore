@@ -7,6 +7,7 @@ const initialState: State = {
   isLoading: false,
   list: [],
   selected: null,
+  isDialogOpen: false,
 };
 
 const sailorsReducer = handleActions<any, any>(
@@ -41,6 +42,15 @@ const sailorsReducer = handleActions<any, any>(
     [actions.doSetSelectedSailor.toString()]: (state, { payload }) => ({
       ...state,
       selected: payload,
+    }),
+    // Dialog
+    [actions.doOpenSailorDialog.toString()]: (state) => ({
+      ...state,
+      isDialogOpen: true,
+    }),
+    [actions.doCloseSailorDialog.toString()]: (state) => ({
+      ...state,
+      isDialogOpen: false,
     }),
   },
   initialState

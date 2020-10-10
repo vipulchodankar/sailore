@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import {
   doSetSelectedSailor,
   doDeleteSailor,
+  doOpenSailorDialog,
 } from "../../redux/actions/sailors";
 
 // Mui
@@ -27,12 +28,12 @@ const useStyles = makeStyles({
 const SailorCard = (props: any) => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const { SID, SNAME, RATING, AGE, setDialog } = props;
+  const { SID, SNAME, RATING, AGE } = props;
 
   const handleUpdate = (e: any) => {
     e.stopPropagation();
-    setDialog({ isOpen: true, sailor: { SID, SNAME, RATING, AGE } });
-    dispatch(doSetSelectedSailor({ SID, SNAME, RATING, AGE }));
+    dispatch(doSetSelectedSailor(props));
+    dispatch(doOpenSailorDialog());
   };
 
   const handleDelete = (e: any) => {

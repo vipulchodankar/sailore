@@ -1,10 +1,11 @@
-import React, { FC, useState, useEffect } from "react";
+import React, { FC, useEffect } from "react";
 
 // Redux
 import { useDispatch, useSelector } from "react-redux";
 import {
   doFetchSailors,
   doSetSelectedSailor,
+  doOpenSailorDialog,
 } from "../../redux/actions/sailors";
 import {
   selectSailorsList,
@@ -43,7 +44,6 @@ const SailorPage: FC = () => {
   const classes = useStyles();
   const sailors = useSelector(selectSailorsList);
   const loading = useSelector(selectSailorsIsLoading);
-  const [dialog, setDialog] = useState({ isOpen: false, sailor: null });
   const dispatch = useDispatch();
 
   useEffect(
@@ -55,8 +55,8 @@ const SailorPage: FC = () => {
 
   const handleFABClick = (e: any) => {
     e.stopPropagation();
-    setDialog({ isOpen: true, sailor: null });
     dispatch(doSetSelectedSailor(null));
+    dispatch(doOpenSailorDialog());
   };
 
   return (
@@ -73,7 +73,7 @@ const SailorPage: FC = () => {
         <Grid container spacing={4}>
           {sailors.map((sailor: Sailor) => (
             <Grid item xs={12} sm={6} md={4} xl={3} key={sailor.SID}>
-              <SailorCard {...sailor} dialog={dialog} setDialog={setDialog} />
+              <SailorCard {...sailor} />
             </Grid>
           ))}
         </Grid>
@@ -89,7 +89,7 @@ const SailorPage: FC = () => {
         Add Sailor
       </Fab>
 
-      <SailorDialog setDialog={setDialog} dialog={dialog} />
+      <SailorDialog />
     </Container>
   );
 };
