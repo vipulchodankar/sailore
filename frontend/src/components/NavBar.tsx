@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { useHistory } from "react-router-dom";
+import history from "../utils/history";
 
 // Mui
 import AppBar from "@material-ui/core/AppBar";
@@ -68,7 +68,6 @@ const useStyles = makeStyles((theme) => ({
 
 const NavBar: FC = () => {
   const classes = useStyles();
-  const history = useHistory();
 
   const handleTitleClick = () => {
     history.push("/");

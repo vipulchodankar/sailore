@@ -1,5 +1,5 @@
 import React, { FC, Fragment } from "react";
-import { useHistory } from "react-router-dom";
+import history from "../../utils/history";
 
 // Mui
 import { makeStyles } from "@material-ui/core";
@@ -17,7 +17,6 @@ const useStyles = makeStyles((theme) => ({
 
 const HomePage: FC = () => {
   const classes = useStyles();
-  const history = useHistory();
 
   const handleClick = () => {
     history.push("/sailor");
