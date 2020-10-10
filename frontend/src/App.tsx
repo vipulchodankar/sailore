@@ -1,5 +1,12 @@
 import React, { Fragment, Suspense } from "react";
-import { BrowserRouter as Router } from "react-router-dom";
+import { Router } from "react-router-dom";
+import history from "./utils/history";
+
+// Redux
+// Redux
+import { Provider } from "react-redux";
+import store, { persistor } from "./redux";
+import { PersistGate } from "redux-persist/integration/react";
 
 // Mui
 import { MuiThemeProvider } from "@material-ui/core";
@@ -14,11 +21,15 @@ function App() {
   return (
     <Fragment>
       <Suspense fallback={<Loader fullscreen />}>
-        <MuiThemeProvider theme={theme}>
-          <Router>
-            <Layout />
-          </Router>
-        </MuiThemeProvider>
+        <Provider store={store}>
+          <PersistGate loading={<Loader />} persistor={persistor}>
+            <MuiThemeProvider theme={theme}>
+              <Router history={history}>
+                <Layout />
+              </Router>
+            </MuiThemeProvider>
+          </PersistGate>
+        </Provider>
       </Suspense>
     </Fragment>
   );

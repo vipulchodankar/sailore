@@ -1,5 +1,12 @@
 import React, { FC, useState, useEffect } from "react";
-import axios from "../../services/axios";
+
+// Redux
+import { useDispatch, useSelector } from "react-redux";
+import { doFetchSailors } from "../../redux/actions/sailors";
+import {
+  selectSailorsList,
+  selectSailorsIsLoading,
+} from "../../redux/selectors/sailors";
 
 // Mui
 import { makeStyles } from "@material-ui/core";
@@ -31,20 +38,18 @@ const useStyles = makeStyles((theme) => ({
 
 const SailorPage: FC = () => {
   const classes = useStyles();
-  const [sailors, setSailors] = useState<Sailor[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [temp, setSailors] = useState<Sailor[]>([]);
+  const sailors = useSelector(selectSailorsList);
+  const loading = useSelector(selectSailorsIsLoading);
   const [dialog, setDialog] = useState({ isOpen: false, sailor: null });
+  const dispatch = useDispatch();
 
-  useEffect(function loadSailors() {
-    setLoading(true);
-    axios
-      .get("/sailor")
-      .then(({ data: { data } }) => {
-        setSailors(data);
-      })
-      .catch((error) => console.error(error))
-      .finally(() => setLoading(false));
-  }, []);
+  useEffect(
+    function loadSailors() {
+      dispatch(doFetchSailors());
+    },
+    [dispatch]
+  );
 
   const handleFABClick = (e: any) => {
     e.stopPropagation();
@@ -53,10 +58,17 @@ const SailorPage: FC = () => {
 
   return (
     <Container>
-      {loading ? <Loader /> : null}
+      {loading && sailors.length === 0 ? (
+        <Loader fullscreen />
+      ) : sailors.length === 0 ? (
+        <Box py={8}>
+          <Typography align="center">No sailors found</Typography>
+        </Box>
+      ) : null}
+
       <Box py={4}>
         <Grid container spacing={4}>
-          {sailors.map((sailor) => (
+          {sailors.map((sailor: Sailor) => (
             <Grid item xs={12} sm={6} md={4} xl={3} key={sailor.SID}>
               <SailorCard
                 {...sailor}
@@ -66,12 +78,6 @@ const SailorPage: FC = () => {
               />
             </Grid>
           ))}
-
-          {sailors.length === 0 ? (
-            <Grid item xs={12} sm={6} md={4} xl={3}>
-              <Typography>No sailors found</Typography>
-            </Grid>
-          ) : null}
         </Grid>
       </Box>
       <Fab
