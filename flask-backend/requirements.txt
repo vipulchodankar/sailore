@@ -1,3 +1,4 @@
+autopep8 @ file:///tmp/build/80754af9/autopep8_1615918855173/work
 certifi==2020.12.5
 click==7.1.2
 contextlib2==0.6.0.post1
@@ -5,8 +6,11 @@ Flask==1.1.2
 Flask-Cors==3.0.10
 itsdangerous==1.1.0
 Jinja2==2.11.3
+mariadb==1.0.6
 MarkupSafe==1.1.1
+pycodestyle @ file:///tmp/build/80754af9/pycodestyle_1615748559966/work
 python-dotenv==0.17.0
 schema==0.7.4
 six==1.15.0
+toml @ file:///tmp/build/80754af9/toml_1616166611790/work
 Werkzeug==1.0.1
