@@ -1,5 +1,7 @@
 # Sailor Flask-Backend
 
+> This is a [Flask](https://flask.palletsprojects.com/en/1.1.x/) implementation of the backend written by [Amit Kenkre](https://github.com/D-coder2) for Sailor which was previously written in [Express.js](https://expressjs.com/) by [Vipul Chondankar](https://github.com/vipulchodankar)
+
 **Follow the steps given below to run this locally**
 
 1. Create a virtual environment either using [_conda_](https://conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html#activating-an-environment) or [_venv_](https://pypi.org/project/virtualenv/)
