@@ -25,6 +25,6 @@ export const updateSailor = (data: any) =>
 
 export const deleteSailor = (SID: number) =>
   axios({
-    method: "PUT",
+    method: "DELETE",
     url: `/sailor/${SID}`,
   });
